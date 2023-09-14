@@ -1,5 +1,5 @@
 import { createStackNavigator } from '@react-navigation/stack'
-import { DishDetailsScreen, DishFormScreen, MenuScreen, NewOrderScreen, OrderProgressScreen, CategoryScreen } from '../screens'
+import { DishDetailsScreen, DishFormScreen, MenuScreen, NewOrderScreen, OrderProgressScreen, CategoryScreen, SummaryOrderScreen } from '../screens'
 import { ImageSourcePropType } from 'react-native'
 
 type Dishs = {
@@ -18,7 +18,8 @@ export type RootStackParams = {
   DishFormScreen: undefined,
   DishDetailsScreen: undefined,
   NewOrderScreen: undefined,
-  OrderProgressScreen: undefined
+  OrderProgressScreen: undefined,
+  SummaryOrderScreen: undefined,
 }
 
 const Stack = createStackNavigator<RootStackParams>()
@@ -40,6 +41,7 @@ export const StackNavigation = () => {
       <Stack.Screen name="DishDetailsScreen" component={DishDetailsScreen} />
       <Stack.Screen name="NewOrderScreen" component={NewOrderScreen} />
       <Stack.Screen name="OrderProgressScreen" component={OrderProgressScreen} />
+      <Stack.Screen name="SummaryOrderScreen" component={SummaryOrderScreen} />
 
     </Stack.Navigator>
   )

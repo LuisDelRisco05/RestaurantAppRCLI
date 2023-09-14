@@ -1,8 +1,11 @@
-import { Fields } from "./ordersContext"
-
 
 const types = { 
-    onSelectOrder: 'onSelectOrder'
+    selectOrder: 'selectOrder',
+    confirmOrder: 'confirmOrder',
+    categoryCurrent: 'categoryCurrent',
+    deleteItem: 'deleteItem',
+    orderPlaced: 'orderPlaced',
+    reset: 'reset'
 }
 
 export default types

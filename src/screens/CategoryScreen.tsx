@@ -1,9 +1,13 @@
 import { useEffect, useContext, useState } from 'react'
-import { Dimensions, StyleSheet, Text, View } from 'react-native'
+import { Dimensions, StyleSheet, Text, TouchableOpacity } from 'react-native'
+import { Box } from '@gluestack-ui/themed'
 import Carousel from 'react-native-reanimated-carousel'
 import { FirebaseContext } from '../context/firebase/FirebaseContext'
+import { OrdersContext } from '../context/orders/OrdersContext'
 import Food from '../components/Food'
-import { Box } from '@gluestack-ui/themed'
+import Icon from 'react-native-vector-icons/FontAwesome'
+import { useNavigation } from '@react-navigation/native'
+
 
 const { width: screenWidth } =  Dimensions.get('window')
 
@@ -12,6 +16,9 @@ export const CategoryScreen = () => {
   const [ categories, setCategories ] = useState<any[]>([])
 
   const { getProducts, menu } = useContext(FirebaseContext)
+  const { orders } = useContext(OrdersContext)
+
+  const { navigate } = useNavigation<any>()
 
   useEffect(() => {
     getProducts()
@@ -33,12 +40,26 @@ export const CategoryScreen = () => {
     updateState()
   }, [menu])
 
-  // console.log(JSON.stringify(categories, null, 3))
-
 
   return (
-    <>
-    <Text style={styles.title}>Categories</Text>
+    <Box style={{ flex: 1, position: 'relative'}}>
+      <Box style={styles.boxTop}>
+        <Text style={styles.title}>RESTAURANTAPP</Text> 
+        {
+          orders.length > 0 && (
+            <TouchableOpacity 
+              style={styles.btnCart}
+              onPress={() => navigate('SummaryOrderScreen')}
+            >
+              <Icon 
+                name="shopping-basket"
+                size={25}
+                color="#fafafa"
+              />
+            </TouchableOpacity>
+          )
+        }        
+      </Box>
       <Box style={ styles.container}>
         {
           categories.length > 0 && (
@@ -48,31 +69,46 @@ export const CategoryScreen = () => {
                 <Food item={item} />
               )}
               width={ screenWidth }
-              height={500}
+              height={600}
               mode='horizontal-stack'
               modeConfig={
                 { 
                   moveSize: 1000, 
                   stackInterval: 30, 
-                  scaleInterval: 0.1, 
+                  scaleInterval: 0.12, 
                   snapDirection: 'left', 
                   opacityInterval: 0,
                   rotateZDeg: 400
                 }
-              }      
+              }   
+              style={{ marginBottom: 30 }}   
             />
           )
         }
       </Box>
-    </>
+    </Box>
   )
 }
 
 const styles = StyleSheet.create({
+  boxTop: { 
+    flexDirection: 'row',
+    justifyContent: 'center',
+    backgroundColor: '#14b8a6'
+  },
+  btnCart:{ 
+    position: 'absolute', 
+    right: 30, 
+    top: 10, 
+    width: 50, 
+    height: 30,
+    justifyContent: 'center',
+    alignItems: 'center' 
+  },
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
+    justifyContent: 'flex-end',
+    alignItems: 'center',
   },
   title: {
     color: '#fafafa',

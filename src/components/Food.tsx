@@ -1,7 +1,7 @@
 import { StyleSheet, TouchableOpacity } from 'react-native'
-import React from 'react'
+import { useContext } from 'react'
 import { Box, Image, Pressable, Text } from '@gluestack-ui/themed'
-import { Fields } from '../context/orders/ordersContext'
+import { Fields, OrdersContext } from '../context/orders/OrdersContext'
 import { useNavigation } from '@react-navigation/native'
 
 
@@ -11,12 +11,17 @@ interface Props {
 
 const Food = ({ item }: Props) => {
 
+    const { onCategoryCurrent } = useContext(OrdersContext)
+
     const { navigate } = useNavigation<any>()
 
     const { category, image } = item
 
   return (
-    <Pressable style={ styles.container } onPress={ () => navigate('MenuScreen', category)}>
+    <Pressable style={ styles.container } onPress={ () =>{ 
+        navigate('MenuScreen')
+        onCategoryCurrent(category)
+    }}>
         <Box style={ styles.containerImg }>
             <Image 
                 source={{ uri: image }}
@@ -36,10 +41,10 @@ export default Food
 const styles = StyleSheet.create({
     container: {
         backgroundColor: '#fefefe',
-        width: 270,
-        height: 450,
+        width: 300,
+        height: 470,
         borderRadius: 20,
-        marginHorizontal: '20%',
+        marginHorizontal: '10%',
         shadowColor: "#000",
         shadowOffset: {
             width: 0,
@@ -49,11 +54,11 @@ const styles = StyleSheet.create({
         shadowRadius: 15.65,
 
         elevation: 6,
+        marginTop: 50
     },
     containerImg: {
         width: '100%',
         height: '85%',
-        backgroundColor: 'red',
         borderTopRightRadius: 20,
         borderTopLeftRadius: 20
     },

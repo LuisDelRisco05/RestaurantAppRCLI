@@ -26,7 +26,7 @@ export const globalStyles = StyleSheet.create({
         shadowRadius: 9.51,
 
         elevation: 15,
-        backgroundColor: '#3730a3',
+        backgroundColor: '#14b8a6',
         justifyContent: 'center',
         alignItems: 'center'
     },

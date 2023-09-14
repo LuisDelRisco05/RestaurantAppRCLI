@@ -1,6 +1,6 @@
 import { useReducer } from "react"
 import { ordersReducer } from "./ordersReducer"
-import {Fields, OrdersContext } from "./ordersContext"
+import {Fields, OrdersContext } from "./OrdersContext"
 import types from "./types"
 
 
@@ -15,7 +15,9 @@ export const OrdersState = ({children}: Props) => {
 
     const initialState = {
         orders: [],
-        order: {}
+        order: {},
+        categoryCurrent: '',
+        orderPlaced: ''
     }
  
     const [ state, dispatch ] = useReducer(ordersReducer, initialState )
@@ -24,8 +26,48 @@ export const OrdersState = ({children}: Props) => {
     const onSelectOrder = (select: {}) => {
 
         dispatch({
-            type: types.onSelectOrder,
+            type: types.selectOrder,
             payload: select
+        })
+    }
+
+    const onConfirmOrder = (order: {}) => {
+
+        dispatch({
+            type: types.confirmOrder,
+            payload: order
+        })     
+    }
+
+    const onCategoryCurrent = (category: string) => {
+
+        dispatch({
+            type: types.categoryCurrent,
+            payload: category
+        })
+    }
+
+    const onDeleteItem = (itemId: string) => {
+
+        const newOrders = state.orders.filter( (item:Fields) => item.id !== itemId)
+
+        dispatch({
+            type: types.deleteItem,
+            payload: newOrders
+        })
+    }
+
+    const onOrderPlaced = (id: string) => {
+        dispatch({
+            type: types.orderPlaced,
+            payload: id
+        })
+    }
+
+    const onReset = () => {
+
+        dispatch({
+            type: types.reset
         })
     }
 
@@ -34,7 +76,14 @@ export const OrdersState = ({children}: Props) => {
         state,
         orders: state.orders,
         order: state.order,
+        categoryCurrent: state.categoryCurrent,
+        orderPlaced: state.orderPlaced,
         onSelectOrder,
+        onConfirmOrder,
+        onCategoryCurrent,
+        onDeleteItem,
+        onOrderPlaced,
+        onReset
     }}>
         {children}
     </OrdersContext.Provider>

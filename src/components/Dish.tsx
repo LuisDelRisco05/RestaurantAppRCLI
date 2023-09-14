@@ -1,10 +1,8 @@
 import { useContext } from 'react'
-import { Box, Button, Image, Text } from "@gluestack-ui/themed"
+import { Box, Image, Text } from "@gluestack-ui/themed"
 import { useNavigation } from "@react-navigation/native"
 import { StyleSheet, TouchableOpacity } from 'react-native'
-import {OrdersContext, Fields } from "../context/orders/ordersContext";
-
-
+import {OrdersContext, Fields } from "../context/orders/OrdersContext";
 
 interface Props {
     dish: Fields,
@@ -16,30 +14,10 @@ export const Dish = ({ dish }: Props) => {
 
     const navigation = useNavigation<any>()
 
-    const { category, description, exist, image, name, price } = dish
-
-    // const showHeading = (category: string, i: number) => {
-    //     if(i > 0 ) {
-    //         const categoryBefore = menu[ index -1 ].category
-    //         if(categoryBefore !== category){
-    //             return (
-    //                 <Box style={styles.separatorCategory}>
-    //                     <Text style={styles.separatorText}>{category}</Text>
-    //                 </Box>
-    //             )
-    //         }
-    //     } else {
-    //         return (
-    //             <Box style={styles.separatorCategory}>
-    //                 <Text style={styles.separatorText}>{category}</Text>
-    //             </Box>
-    //         )
-    //     }
-    // }
+    const { category, description, image, name, price } = dish
 
   return (
     <>
-        {/* {showHeading(category, index)} */}
         <TouchableOpacity style={styles.card} onPress={() => {
             onSelectOrder(dish)
             navigation.navigate('DishDetailsScreen')

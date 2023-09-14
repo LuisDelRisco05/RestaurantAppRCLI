@@ -1,30 +1,26 @@
-import { useEffect, useContext } from 'react';
+import { useContext } from 'react';
 import { StyleSheet, View, TouchableOpacity, FlatList } from "react-native"
-import { StackScreenProps } from "@react-navigation/stack"
 import { useNavigation } from "@react-navigation/native"
 
 import { FirebaseContext } from "../context/firebase/FirebaseContext"
 import { Dish } from "../components/Dish"
+import { OrdersContext } from '../context/orders/OrdersContext';
 import Skeleton from "../components/Skeleton"
-import { RootStackParams } from '../navigations';
 
 import { Box, Text } from "@gluestack-ui/themed"
 import Icon from 'react-native-vector-icons/FontAwesome6'
 
 
-interface Props extends StackScreenProps<RootStackParams, 'MenuScreen'>{}
+// interface Props extends StackScreenProps<RootStackParams, 'MenuScreen'>{}
 
-export const MenuScreen = ({route}: Props) => {
+export const MenuScreen = () => {
 
-  const categoryCurrent = route.params
+  const { navigate } = useNavigation<any>()
 
-  const { goBack } = useNavigation<any>()
+  const { menu } = useContext(FirebaseContext)
+  const { categoryCurrent } = useContext(OrdersContext)
 
-  const { getProducts, menu } = useContext(FirebaseContext)
-
-  useEffect(() => {
-    getProducts()
-  }, [])
+  const data = menu.filter( item => categoryCurrent === item.category && item )
 
   return (
     <Box style={styles.container}>  
@@ -33,7 +29,7 @@ export const MenuScreen = ({route}: Props) => {
           (
             <Box style={styles.containerCard}>
               <FlatList 
-                data={menu.filter( item => categoryCurrent === item.category && item )}
+                data={ data }
                 keyExtractor={ ( item ) => item.id.toString() }
                 renderItem={({ item }) => (
                     <Dish dish={item} />
@@ -41,14 +37,14 @@ export const MenuScreen = ({route}: Props) => {
                 }
                 ListHeaderComponent={ () => (
                   <Box style={styles.containerHeader}>
-                    <TouchableOpacity style={styles.iconBack} onPress={() => goBack() }>
+                    <TouchableOpacity style={styles.iconBack} onPress={() => navigate('CategoryScreen') }>
                       <Icon 
                         name="angle-left"
                         size={ 25 }
                         color="#1e293b"
                       />
                     </TouchableOpacity>
-                    <Text style={styles.title}>Menu</Text> 
+                    <Text style={styles.title}>{categoryCurrent}</Text> 
                   </Box>
                 )
               }
@@ -106,6 +102,7 @@ const styles = StyleSheet.create({
     fontSize: 25,
     textAlign: 'center',
     paddingVertical: 10,
+    textTransform: 'uppercase'
   },
   containerCard: {
     justifyContent: 'center',
@@ -122,4 +119,4 @@ const styles = StyleSheet.create({
   space: {
     height: 25
   }
-});
+})

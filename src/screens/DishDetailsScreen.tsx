@@ -2,7 +2,7 @@ import { useContext } from 'react'
 import { StyleSheet, TouchableOpacity } from "react-native"
 import { useNavigation } from '@react-navigation/native'
 
-import { OrdersContext } from '../context/orders/ordersContext'
+import { OrdersContext } from '../context/orders/OrdersContext'
 
 import { Box, Image, Text } from '@gluestack-ui/themed'
 import Icon from 'react-native-vector-icons/FontAwesome6'
@@ -12,28 +12,32 @@ export const DishDetailsScreen = () => {
 
   const { order } = useContext(OrdersContext)
 
-  const { category, description, exist, image, name, price } = order
+  const { description, exist, image, name, price } = order
 
-  const { goBack } = useNavigation<any>()
+  const { goBack, navigate } = useNavigation<any>()
 
   return (
     <Box style={ styles.container }>
       <Box style={styles.containerImg}>
         <TouchableOpacity style={styles.iconBack} onPress={() => goBack() }>
-            <Icon 
-              name="angle-left"
-              size={ 25 }
-              color="#fafafa"
-            />
-          </TouchableOpacity>
-          <Image 
-              source={{ uri: image }}
-              style={styles.img}
-          />   
+          <Icon 
+            name="angle-left"
+            size={ 25 }
+            color="#fafafa"
+          />
+        </TouchableOpacity>
+        <Image 
+            source={{ uri: image }}
+            style={styles.img}
+        />   
       </Box>
       <Text style={styles.name}>{name}</Text>
       <Text style={styles.description}>{description}</Text>
       <Text style={styles.price}>Price: ${price}</Text>
+
+      <TouchableOpacity style={styles.btnOrder} onPress={() => navigate("DishFormScreen")}>
+        <Text style={styles.btnText}>Order dish</Text>
+      </TouchableOpacity>
   
     </Box>
   )
@@ -43,6 +47,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
+    position:'relative'
   },
   iconBack:{
     position: 'absolute',
@@ -73,9 +78,9 @@ const styles = StyleSheet.create({
   name: {
     fontWeight: '800',
     color: '#1e293b',
-    fontSize: 25,
+    fontSize: 30,
     marginTop: 10,
-    padding: 5
+    paddingTop: 10,
   },
   description: {
     fontWeight: '500',
@@ -88,9 +93,26 @@ const styles = StyleSheet.create({
   price: {
     fontWeight: '900',
     color: '#1e293b',
-    fontSize: 16,
+    fontSize: 25,
     marginTop: 10,
-    padding: 5,
-    width: '100%'
+    width: '100%',
+    paddingTop: 10,
+    paddingLeft: 5
+  },
+  btnOrder:{
+    backgroundColor: '#14b8a6',
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+    padding: 20,
+    justifyContent: 'center',
+    alignItems:'center',
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+  },
+  btnText: {
+    color: '#fafafa',
+    fontWeight: '800',
+    fontSize: 20
   }
 })
